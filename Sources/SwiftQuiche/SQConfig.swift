@@ -6,10 +6,10 @@ import XCQuiche
 public final class SQConfig {
   private let config: OpaquePointer!
 
-  init() throws {
+  init?() {
     config = quiche_config_new(UInt32(QUICHE_PROTOCOL_VERSION))
     if config == nil {
-      throw SQConfigError.initFailure
+      return nil
     }
   }
 
@@ -19,25 +19,25 @@ public final class SQConfig {
 
   public func loadCertChainFromPEMFile(path: String) throws {
     if quiche_config_load_cert_chain_from_pem_file(config, path) != 0 {
-      throw SQConfigError.loadCertChainFromPEMFileFailure
+      throw SQError.tlsFail
     }
   }
 
   public func loadPrivKeyFromPEMFile(path: String) throws {
     if quiche_config_load_priv_key_from_pem_file(config, path) != 0 {
-      throw SQConfigError.loadPrivKeyFromPEMFileFailure
+      throw SQError.tlsFail
     }
   }
 
   public func loadVerifyLocationsFromFile(path: String) throws {
     if quiche_config_load_verify_locations_from_file(config, path) != 0 {
-      throw SQConfigError.loadVerifyLocationsFromFileFailure
+      throw SQError.tlsFail
     }
   }
 
   public func loadVerifyLocationsFromDirectory(path: String) throws {
     if quiche_config_load_verify_locations_from_directory(config, path) != 0 {
-      throw SQConfigError.loadVerifyLocationsFromDirectoryFailure
+      throw SQError.tlsFail
     }
   }
 
@@ -57,8 +57,10 @@ public final class SQConfig {
     quiche_config_enable_early_data(config)
   }
 
-  public func setApplicationProtos(protos: String) {
-    quiche_config_set_application_protos(config, protos, protos.utf8CString.count - 1)
+  public func setApplicationProtos(protos: String) throws {
+    if quiche_config_set_application_protos(config, protos, protos.utf8CString.count - 1) != 0 {
+      throw SQError.tlsFail
+    }
   }
 
   public func setMaxIdleTimeout(_ v: UInt64) {
@@ -116,7 +118,7 @@ public final class SQConfig {
 /*
   public func setCCAlgorithmName(_ name: String) throws {
     if quiche_config_set_cc_algorithm_name(config, name) != 0 {
-      throw SQConfigError.setCCAlgorithmFailure
+      throw SQConfigError.setCCAlgorithmNameFailure
     }
   }
 */
