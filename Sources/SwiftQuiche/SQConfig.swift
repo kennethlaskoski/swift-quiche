@@ -4,13 +4,14 @@
 import XCQuiche
 
 public final class SQConfig {
-  private let config: OpaquePointer!
+  private let config: OpaquePointer
 
-  init?() {
-    config = quiche_config_new(UInt32(QUICHE_PROTOCOL_VERSION))
-    if config == nil {
+  init?(version: SQQuicVersion) {
+    let result = quiche_config_new(version)
+    guard let config = result else {
       return nil
     }
+    self.config = config
   }
 
   deinit {
@@ -146,4 +147,10 @@ public final class SQConfig {
     quiche_config_set_stateless_reset_token(config, v)
   }
 */
+}
+
+extension SQConfig {
+  convenience init() {
+    self.init(version: sqQuicVersion)!
+  }
 }
