@@ -6,7 +6,7 @@ import XCQuiche
 public final class SQConfig {
   private let config: OpaquePointer
 
-  init?(version: SQQuicVersion) {
+  init?(version: SQVersion) {
     let result = quiche_config_new(version)
     guard let config = result else {
       return nil
@@ -151,6 +151,6 @@ public final class SQConfig {
 
 extension SQConfig {
   convenience init() {
-    self.init(version: sqQuicVersion)!
+    self.init(version: sqVersion)!
   }
 }

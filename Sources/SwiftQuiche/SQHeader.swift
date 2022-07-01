@@ -3,9 +3,9 @@
 
 public struct SQHeader {
   let type: SQType
-  let version: SQQuicVersion
+  let version: SQVersion
   let dcid: SQConnectionID
   let scid: SQConnectionID
   let token: SQToken?
-  let versions: [SQQuicVersion]?
+  let versions: [SQVersion]?
 }

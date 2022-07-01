@@ -6,7 +6,7 @@ import XCTest
 
 final class SQConfigTests: XCTestCase {
   func testInit() throws {
-    XCTAssertNotNil(SQConfig(version: sqQuicVersion))
+    XCTAssertNotNil(SQConfig(version: sqVersion))
 
     // THIS MAY CHANGE
     XCTAssertNil(SQConfig(version: 0x7fffffff))

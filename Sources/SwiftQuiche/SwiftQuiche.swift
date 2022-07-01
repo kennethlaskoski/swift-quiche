@@ -3,15 +3,7 @@
 
 import XCQuiche
 
-public typealias SQQuicVersion = UInt32
-
-public let sqQuicVersion = SQQuicVersion(QUICHE_PROTOCOL_VERSION)
-
-public func isSQSupported(version: SQQuicVersion) -> Bool {
-  quiche_version_is_supported(version)
-}
-
-public func sqHeaderInfo(buffer: [UInt8]) throws -> (SQType?, SQQuicVersion, SQConnectionID, SQConnectionID, SQToken) {
+public func sqHeaderInfo(buffer: [UInt8]) throws -> (SQType?, SQVersion, SQConnectionID, SQConnectionID, SQToken) {
   var type: UInt8 = 0
   var version: UInt32 = 0
 
@@ -33,7 +25,7 @@ public func sqHeaderInfo(buffer: [UInt8]) throws -> (SQType?, SQQuicVersion, SQC
 
   return (
     SQType(rawValue: type),
-    SQQuicVersion(version),
+    SQVersion(version),
     SQConnectionID(bytes: scid),
     SQConnectionID(bytes: dcid),
     SQToken(bytes: token)
