@@ -1,9 +1,9 @@
 //  Copyright Kenneth Laskoski. All Rights Reserved.
 //  SPDX-License-Identifier: Apache-2.0
 
-import XCQuiche
+import Darwin
 
-public struct SQConnectionID {
+public struct SQToken {
   let data: [UInt8]
 
   init<T: Sequence>(bytes: T) where T.Element == UInt8 {
@@ -13,6 +13,11 @@ public struct SQConnectionID {
   public var length: Int { data.count }
 }
 
-extension SQConnectionID {
-  public static var maxLength: Int { Int(QUICHE_MAX_CONN_ID_LEN) }
+extension SQToken {
+  public static var maxLength: Int {
+    var result = "quiche".utf8CString.count - 1
+    result += MemoryLayout<sockaddr_storage>.size
+    result += SQConnectionID.maxLength
+    return result
+  }
 }
