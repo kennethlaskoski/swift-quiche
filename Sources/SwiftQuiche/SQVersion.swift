@@ -30,3 +30,9 @@ extension SQVersion {
   public static let versionDraft28: SQVersion = 0xff00_001c
   public static let versionDraft29: SQVersion = 0xff00_001d
 }
+
+extension SQVersion: CustomStringConvertible {
+  public var description: String {
+    "0x\(String(rawValue, radix: 16))"
+  }
+}
