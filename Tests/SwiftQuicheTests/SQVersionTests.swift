@@ -6,14 +6,13 @@ import XCTest
 
 final class SQVersionTests: XCTestCase {
   func testCurrentVersion() throws {
-    XCTAssertTrue(sqSupports(version: sqVersion))
-    XCTAssertEqual(sqVersion, sqVersion1)
+    XCTAssertEqual(sqVersion, .version1)
   }
 
   func testVersionSupport() throws {
-    XCTAssertTrue(sqSupports(version: sqVersion1))
-    XCTAssertTrue(sqSupports(version: sqVersionDraft27))
-    XCTAssertTrue(sqSupports(version: sqVersionDraft28))
-    XCTAssertTrue(sqSupports(version: sqVersionDraft29))
+    XCTAssertTrue(isSupported(version: .version1))
+    XCTAssertTrue(isSupported(version: .versionDraft27))
+    XCTAssertTrue(isSupported(version: .versionDraft28))
+    XCTAssertTrue(isSupported(version: .versionDraft29))
   }
 }

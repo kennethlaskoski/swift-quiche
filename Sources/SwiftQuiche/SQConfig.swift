@@ -7,7 +7,7 @@ public final class SQConfig {
   private let config: OpaquePointer
 
   init?(version: SQVersion) {
-    let result = quiche_config_new(version)
+    let result = quiche_config_new(version.rawValue)
     guard let config = result else {
       return nil
     }
