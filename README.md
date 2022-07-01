@@ -1,3 +1,3 @@
 # SwiftQuiche
 
-A description of this package.
+Swift bridge to Cloudflare's quiche.
