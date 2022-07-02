@@ -8,7 +8,7 @@ public func isSupported(version: SQVersion) -> Bool {
   quiche_version_is_supported(version.rawValue)
 }
 
-public func sqHeaderInfo(buffer: [UInt8]) throws -> (SQType?, SQVersion, SQConnectionID, SQConnectionID, SQToken) {
+public func sqHeaderInfo<Token: SQAddressToken>(buffer: [UInt8]) throws -> (SQType?, SQVersion, SQConnectionID, SQConnectionID, Token) {
   var type: UInt8 = 0
   var version: UInt32 = 0
 
@@ -18,8 +18,8 @@ public func sqHeaderInfo(buffer: [UInt8]) throws -> (SQType?, SQVersion, SQConne
   var dcid = [UInt8](repeating: 0, count: SQConnectionID.maxLength)
   var dcid_len = SQConnectionID.maxLength
 
-  var token = [UInt8](repeating: 0, count: SQToken.maxLength)
-  var token_len = SQToken.maxLength
+  var token = [UInt8](repeating: 0, count: Token.maxLength)
+  var token_len = Token.maxLength
 
   let rc = quiche_header_info(buffer, buffer.count, SQConnectionID.maxLength, &version,
                               &type, &scid, &scid_len, &dcid, &dcid_len,
@@ -33,6 +33,6 @@ public func sqHeaderInfo(buffer: [UInt8]) throws -> (SQType?, SQVersion, SQConne
     SQVersion(rawValue: version),
     SQConnectionID(bytes: scid),
     SQConnectionID(bytes: dcid),
-    SQToken(bytes: token)
+    Token(bytes: token)
   )
 }

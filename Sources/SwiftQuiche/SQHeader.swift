@@ -6,6 +6,6 @@ public struct SQHeader {
   let version: SQVersion
   let dcid: SQConnectionID
   let scid: SQConnectionID
-  let token: SQToken?
+  let token: SQAddressToken?
   let versions: [SQVersion]?
 }
