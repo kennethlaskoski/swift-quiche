@@ -12,12 +12,15 @@ let package = Package(
     ),
   ],
   dependencies: [
+    .package(url: "https://github.com/apple/swift-nio", from: "2.0.0"),
     .package(url: "https://github.com/kennethlaskoski/xc-quiche.git", branch: "main"),
   ],
   targets: [
     .target(
       name: "SwiftQuiche",
       dependencies: [
+        .product(name: "NIOCore", package: "swift-nio"),
+//        .product(name: "NIOPosix", package: "swift-nio"),
         .product(name: "XCQuiche", package: "xc-quiche"),
       ]
     ),

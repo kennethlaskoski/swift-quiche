@@ -20,10 +20,6 @@ extension SQVersion: ExpressibleByIntegerLiteral {
   }
 }
 
-extension SQVersion: Sendable, Equatable, Hashable {}
-
-extension SQVersion: Codable {}
-
 extension SQVersion {
   public static let version1: SQVersion = 0x0000_0001
   public static let versionDraft27: SQVersion = 0xff00_001b
@@ -31,8 +27,12 @@ extension SQVersion {
   public static let versionDraft29: SQVersion = 0xff00_001d
 }
 
+extension SQVersion: Sendable, Equatable, Hashable {}
+
+extension SQVersion: Codable {}
+
 extension SQVersion: CustomStringConvertible {
   public var description: String {
-    "0x\(String(rawValue, radix: 16))"
+    "\(String(rawValue, radix: 16))"
   }
 }

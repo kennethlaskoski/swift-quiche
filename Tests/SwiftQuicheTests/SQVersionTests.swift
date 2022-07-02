@@ -17,6 +17,6 @@ final class SQVersionTests: XCTestCase {
   }
 
   func testDescription() throws {
-    XCTAssertEqual("0x1", SQVersion.version1.description )
+    XCTAssertEqual("1", SQVersion.version1.description )
   }
 }

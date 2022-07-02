@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "swift-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio",
+      "state" : {
+        "revision" : "124119f0bb12384cef35aa041d7c3a686108722d",
+        "version" : "2.40.0"
+      }
+    },
+    {
       "identity" : "xc-quiche",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kennethlaskoski/xc-quiche.git",

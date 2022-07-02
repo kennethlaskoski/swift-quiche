@@ -6,12 +6,11 @@ import XCQuiche
 public final class SQConfig {
   private let config: OpaquePointer
 
-  init?(version: SQVersion) {
-    let result = quiche_config_new(version.rawValue)
-    guard let config = result else {
+  public init?(version: SQVersion) {
+    guard let new = quiche_config_new(version.rawValue) else {
       return nil
     }
-    self.config = config
+    config = new
   }
 
   deinit {
@@ -150,7 +149,13 @@ public final class SQConfig {
 }
 
 extension SQConfig {
-  convenience init() {
+  convenience public init() {
     self.init(version: sqVersion)!
   }
+}
+
+extension SQConfig: RawRepresentable {
+  public typealias RawValue = OpaquePointer?
+  public var rawValue: RawValue { config }
+  convenience public init?(rawValue: RawValue) { nil }
 }

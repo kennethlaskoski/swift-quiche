@@ -13,4 +13,13 @@ final class SQConnectionIDTests: XCTestCase {
   func testMaxLength() throws {
     XCTAssertEqual(SQConnectionID.maxLength, 20)
   }
+
+  func testRawRepresentable() throws {
+    let bytes: [UInt8] = [1,2,3]
+    XCTAssertEqual(SQConnectionID(rawValue: bytes).rawValue, bytes)
+  }
+
+  func testDescription() throws {
+    XCTAssertEqual("2a101b", SQConnectionID(bytes: [42,16,27]).description)
+  }
 }
