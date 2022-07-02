@@ -8,8 +8,8 @@ public struct SQHeader {
   public let version: SQVersion
   public let dcid: SQConnectionID
   public let scid: SQConnectionID
-  public let token: [UInt8]
-  public let versions: [SQVersion]
+  public let token: [UInt8]?
+  public let versions: [SQVersion]?
 }
 
 public func sqHeaderInfo(
@@ -46,9 +46,9 @@ public func sqHeaderInfo(
   return SQHeader(
     type: SQType(rawValue: type)!,
     version: SQVersion(rawValue: version),
-    dcid: SQConnectionID(bytes: dcid),
-    scid: SQConnectionID(bytes: scid),
-    token: [UInt8](token[0..<tokenLength]),
-    versions: []
+    dcid: SQConnectionID(bytes: dcid[0..<dcid_len]),
+    scid: SQConnectionID(bytes: scid[0..<scid_len]),
+    token: token_len > 0 ? [UInt8](token[0..<token_len]) : nil,
+    versions: nil
   )
 }

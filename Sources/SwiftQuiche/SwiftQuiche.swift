@@ -44,3 +44,9 @@ public func sqConnect(
     return SQConnection(rawValue: pointer)
   }
 }
+
+public func sqNegotiateVersion(sourceID: SQConnectionID, destinationID: SQConnectionID, count: Int) -> [UInt8] {
+  var buffer = [UInt8](repeating: 0, count: count)
+  quiche_negotiate_version(sourceID.rawValue, sourceID.length, destinationID.rawValue, destinationID.length, &buffer, buffer.count)
+  return buffer
+}
