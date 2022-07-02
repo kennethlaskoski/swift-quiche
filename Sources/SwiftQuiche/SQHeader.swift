@@ -4,15 +4,19 @@
 import XCQuiche
 
 public struct SQHeader {
-  let type: SQType
-  let version: SQVersion
-  let dcid: SQConnectionID
-  let scid: SQConnectionID
-  let token: [UInt8]?
-  let versions: [SQVersion]?
+  public let type: SQType
+  public let version: SQVersion
+  public let dcid: SQConnectionID
+  public let scid: SQConnectionID
+  public let token: [UInt8]
+  public let versions: [SQVersion]
 }
 
-public func sqHeaderInfo(buffer: [UInt8], localConnectionIDLength: Int, tokenLength: Int) throws -> (SQType, SQVersion, SQConnectionID, SQConnectionID, [UInt8]) {
+public func sqHeaderInfo(
+  packet: [UInt8],
+  localConnectionIDLength: Int,
+  tokenLength: Int
+) throws -> SQHeader {
   var type: UInt8 = 0
   var version: UInt32 = 0
 
@@ -25,18 +29,26 @@ public func sqHeaderInfo(buffer: [UInt8], localConnectionIDLength: Int, tokenLen
   var token = [UInt8](repeating: 0, count: tokenLength)
   var token_len = tokenLength
 
-  let rc = quiche_header_info(buffer, buffer.count, localConnectionIDLength, &version,
-                              &type, &scid, &scid_len, &dcid, &dcid_len,
-                              &token, &token_len)
+  let rc = quiche_header_info(
+    packet, packet.count,
+    localConnectionIDLength,
+    &version,
+    &type,
+    &scid, &scid_len,
+    &dcid, &dcid_len,
+    &token, &token_len
+  )
+
   guard rc >= 0 else {
     throw SQError.invalidPacket
   }
 
-  return (
-    SQType(rawValue: type)!,
-    SQVersion(rawValue: version),
-    SQConnectionID(bytes: scid),
-    SQConnectionID(bytes: dcid),
-    token
+  return SQHeader(
+    type: SQType(rawValue: type)!,
+    version: SQVersion(rawValue: version),
+    dcid: SQConnectionID(bytes: dcid),
+    scid: SQConnectionID(bytes: scid),
+    token: [UInt8](token[0..<tokenLength]),
+    versions: []
   )
 }

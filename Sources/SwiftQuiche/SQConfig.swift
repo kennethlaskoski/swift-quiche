@@ -3,6 +3,17 @@
 
 import XCQuiche
 
+public enum SQCCAlgorithm: quiche_cc_algorithm {
+  case reno
+  case cubic
+}
+
+extension quiche_cc_algorithm: ExpressibleByIntegerLiteral {
+  public init(integerLiteral value: UInt32) {
+    self.init(rawValue: value)
+  }
+}
+
 public final class SQConfig {
   private let config: OpaquePointer
 
@@ -57,7 +68,7 @@ public final class SQConfig {
     quiche_config_enable_early_data(config)
   }
 
-  public func setApplicationProtos(protos: String) throws {
+  public func setApplicationProtos(_ protos: String) throws {
     if quiche_config_set_application_protos(config, protos, protos.utf8CString.count - 1) != 0 {
       throw SQError.tlsFail
     }
@@ -112,8 +123,8 @@ public final class SQConfig {
   }
 
   // TODO: bridge quiche_cc_algorithm
-  public func setCCAlgorithm(_ algo: quiche_cc_algorithm) {
-    quiche_config_set_cc_algorithm(config, algo)
+  public func setCCAlgorithm(_ algo: SQCCAlgorithm) {
+    quiche_config_set_cc_algorithm(config, algo.rawValue)
   }
 /*
   public func setCCAlgorithmName(_ name: String) throws {
